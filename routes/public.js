@@ -40,11 +40,11 @@ router.post('/login', async (req, res) => {
             return res.status(404).json({menssage: "Usuario nao encontrado"});
         }
         
-        const isMatch = await bcrypt.compare(userInfo.password, user.Password);
+        const isMatch = await bcrypt.compare(userInfo.password, user.password);
         if(!isMatch){
-            res.status(400).json({message: "Erro no Servidor, tente novamente!"});
+            return res.status(400).json({message: "Credenciais inválidas!"}); 
         }
-
+        
         const token = jwt.sign({id: user.id}, jwt_secret, { expiresIn: '7d' })
 
         res.status(200).json(token);
